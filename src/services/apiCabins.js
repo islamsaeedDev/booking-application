@@ -8,8 +8,24 @@ export async function getCabins() {
 
     if (error) {
         console.error('Error fetching cabins:', error);
-        throw new Error(error);
+        throw new Error(error.message);
     }
     return data;
 }
 
+
+export async function deleteCabin(id) {
+
+
+    const { data, error } = await supabase
+        .from('cabins')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('Error deleting cabin:', error);
+        throw new Error(error.message);
+    }
+    return data;
+
+}
