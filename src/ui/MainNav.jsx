@@ -1,17 +1,12 @@
-import { NavLink } from "react-router-dom";
-import styled from "styled-components";
-import {
-  FcCalendar,
-  FcHome,
-  FcDepartment,
-  FcBusinessman,
-} from "react-icons/fc";
+import { NavLink } from 'react-router-dom'
+import styled from 'styled-components'
+import { FcCalendar, FcHome, FcDepartment, FcBusinessman } from 'react-icons/fc'
 
 const NavList = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-`;
+`
 
 const StylesNavLink = styled(NavLink)`
   &:link,
@@ -49,7 +44,7 @@ const StylesNavLink = styled(NavLink)`
   &.active:visited svg {
     transform: translateX(5px);
   }
-`;
+`
 
 function MainNav() {
   return (
@@ -87,7 +82,7 @@ function MainNav() {
         </li>
       </NavList>
     </nav>
-  );
+  )
 }
 
-export default MainNav;
+export default MainNav
