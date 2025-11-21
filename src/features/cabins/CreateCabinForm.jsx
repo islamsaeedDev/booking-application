@@ -9,47 +9,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Spinner from "../../ui/Spinner";
 import FormRow from "../../ui/FormRow";
-
-const FormRow22 = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
-  gap: 2.4rem;
-
-  padding: 1.2rem 0;
-
-  &:first-child {
-    padding-top: 0;
-  }
-
-  &:last-child {
-    padding-bottom: 0;
-  }
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  &:has(button) {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1.2rem;
-  }
-`;
-
-const Label = styled.label`
-  font-weight: 500;
-`;
-
-const Error = styled.span`
-  font-size: 1.4rem;
-  color: var(--color-red-700);
-`;
+import FileInput from "../../ui/FileInput";
 
 function CreateCabinForm() {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
-  console.log("SA", errors);
 
   const queryClient = useQueryClient();
 
@@ -66,8 +30,10 @@ function CreateCabinForm() {
   });
 
   function onSubmit(data) {
-    mutate(data);
+    mutate({ ...data, image: data.image[0] });
+    console.log("all data", data);
   }
+
   function onError(errors) {
     console.log("form errors", errors);
   }
@@ -123,7 +89,7 @@ function CreateCabinForm() {
           {...register("discount", {
             required: "this input is required",
             validate: (value) =>
-              value <= getValues().regularPrice ||
+              Number(value) <= Number(getValues("regularPrice")) ||
               "Discount must be less than regular price",
           })}
         />
@@ -142,18 +108,24 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow22>
-        <Label htmlFor="image">Cabin photo</Label>
-        {/* <FileInput id="image" accept="image/*" {...register("image")} /> */}
-      </FormRow22>
+      <FormRow Label="Cabin photo">
+        <FileInput
+          id="image"
+          accept="image/*"
+          type="file"
+          {...register("image", {
+            required: "this upload image  field is required",
+          })}
+        />
+      </FormRow>
 
-      <FormRow22>
+      <FormRow>
         {/* type is an HTML attribute! */}
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
         <Button disabled={isCreating}>create cabin</Button>
-      </FormRow22>
+      </FormRow>
     </Form>
   );
 }

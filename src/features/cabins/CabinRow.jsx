@@ -1,7 +1,8 @@
-import styled from 'styled-components'
-import { deleteCabin } from '../../services/apiCabins'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import toast from 'react-hot-toast'
+import styled from "styled-components";
+import { deleteCabin } from "../../services/apiCabins";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { useState } from "react";
 
 const TableRow = styled.div`
   display: grid;
@@ -13,7 +14,7 @@ const TableRow = styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
   }
-`
+`;
 
 const Img = styled.img`
   display: block;
@@ -22,27 +23,28 @@ const Img = styled.img`
   object-fit: cover;
   object-position: center;
   transform: scale(1.5) translateX(-7px);
-`
+`;
 
 const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
-  font-family: 'Sono';
-`
+  font-family: "Sono";
+`;
 
 const Price = styled.div`
-  font-family: 'Sono';
+  font-family: "Sono";
   font-weight: 600;
-`
+`;
 
 const Discount = styled.div`
-  font-family: 'Sono';
+  font-family: "Sono";
   font-weight: 500;
   color: var(--color-green-700);
-`
+`;
 
 function CabinRow({ cabin }) {
+  const [showForm, setShowForm] = useState(false);
   const {
     id: cabinId,
     name,
@@ -50,19 +52,19 @@ function CabinRow({ cabin }) {
     regularPrice,
     discount,
     image,
-  } = cabin
+  } = cabin;
 
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
   const { isLoading: isDeleting, mutate } = useMutation({
     mutationFn: deleteCabin,
     onSuccess: () => {
-      toast.success('Cabin deleted successfully')
-      queryClient.invalidateQueries({ queryKey: ['cabin'] })
+      toast.success("Cabin deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["cabin"] });
     },
     // onMutate: () => alert("Deleting cabin..."),
-    onError: err => toast.error(err.message),
-  })
+    onError: (err) => toast.error(err.message),
+  });
 
   return (
     <TableRow role="row">
@@ -71,12 +73,14 @@ function CabinRow({ cabin }) {
       <Cabin>{maxCapacity}</Cabin>
       <Price>{regularPrice}</Price>
       <Discount>{discount}</Discount>
-
-      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
-        delete
-      </button>
+      <div>
+        <button onClick={() => setShowForm((show) => !show)}>Edit</button>
+        <button onClick={() => mutate(cabinId)} disabled={isDeleting}>
+          delete
+        </button>
+      </div>
     </TableRow>
-  )
+  );
 }
 
-export default CabinRow
+export default CabinRow;  
