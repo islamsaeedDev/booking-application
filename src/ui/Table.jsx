@@ -9,7 +9,7 @@ const StyledTable = styled.div`
   border-radius: 7px;
   overflow: hidden;
   overflow: auto;
-  min-width: 120rem;
+  min-width: 100rem;
 `;
 
 const CommonRow = styled.div`
@@ -55,7 +55,7 @@ const Footer = styled.footer`
   }
 `;
 
-constEmpty = styled.p`
+const Empty = styled.p`
   font-size: 1.6rem;
   font-weight: 500;
   text-align: center;
